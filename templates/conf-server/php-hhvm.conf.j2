@@ -1,0 +1,26 @@
+## Match all hack and php files
+#
+location ~ \.(hh|php)$ {
+
+## Connection settings
+#
+  fastcgi_pass {{ upstream_name }}:{{ upstream_port }};
+
+  fastcgi_keep_conn on;
+  fastcgi_index index.php;
+
+  include {{ nginx_root }}/fastcgi.conf;
+
+## Connection and requests rate limiting at the PHP level
+#
+#  limit_conn {{ limit_conn }};
+#  limit_req {{ limit_req }};
+
+## FastCGI cache settings disable for SSL
+#
+  fastcgi_cache_bypass {{ fastcgi_cache_bypass }};
+  fastcgi_no_cache {{ fastcgi_no_cache }};
+  fastcgi_cache {{ fastcgi_cache }};
+  fastcgi_cache_valid {{ fastcgi_cache_valid }};
+
+}

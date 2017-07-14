@@ -1,0 +1,41 @@
+---
+# Nginx
+# http://nginx.org/en/download.html
+#
+# Mainline 1.13.3
+# Stable 1.12.1
+#
+nginx_version: nginx-1.13.3
+
+# Custom openssl source
+# https://www.openssl.org/source/
+# https://github.com/openssl/openssl/releases
+#
+# Latest stable 1.1.0
+# LTS version 1.0.2
+#
+openssl_folder_web: openssl-1.1.0f
+openssl_archive_web: openssl-1.1.0f.tar.gz
+
+openssl_folder_github: openssl-OpenSSL_1_1_0f
+openssl_archive_github: OpenSSL_1_1_0f.tar.gz
+
+# Pagespeed
+# https://github.com/pagespeed/ngx_pagespeed/releases
+#
+pagespeed_folder: ngx_pagespeed-1.12.34.2-stable
+pagespeed_archive: v1.12.34.2-stable.zip
+
+# PSOL
+# https://developers.google.com/speed/pagespeed/module/build_ngx_pagespeed_from_source
+#
+psol_library: 1.12.34.2-x64.tar.gz
+
+# Naxsi
+# https://github.com/nbs-system/naxsi/releases
+naxsi_version: 0.55.3
+naxsi_archive: 0.55.3.tar.gz
+
+# Geoip
+# http://geolite.maxmind.com/download/geoip/api/c/GeoIP.tar.gz
+geoip_folder: GeoIP-1.4.8

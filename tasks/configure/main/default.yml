@@ -1,0 +1,30 @@
+---
+- name: create serverblock folders
+  file: path={{ item }}
+        state=directory
+        recurse=yes
+        owner=root
+        group=root
+        mode=0755
+
+  with_items:
+  - "{{ nginx_sites_available }}"
+  - "{{ nginx_sites_enabled }}"
+
+
+- name: copy default serverblock
+  template: src=templates/main/default.conf.j2
+            dest={{ nginx_sites_available }}default.conf
+            owner=root
+            group=root
+            mode=0644
+#  notify: restart nginx
+
+
+- name: make default serverblock symbolic link
+  file: src={{ nginx_sites_available }}default.conf
+        dest={{ nginx_sites_enabled }}default.conf
+        owner=root
+        group=root
+        state=link
+#  notify: restart nginx

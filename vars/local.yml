@@ -1,0 +1,17 @@
+---
+## Global
+user: root
+ubuntu_version_name: xenial
+debian_version_name: jessie
+downloads: /opt/downloads/
+home_ip: 192.168.1.1
+
+## Nginx
+nginx_user: root
+
+## PHP
+php_global_connection: "wordpress:{{ php_tcp_port }}"
+
+# Upstream
+upstream_name: wordpress
+upstream_port: 9000

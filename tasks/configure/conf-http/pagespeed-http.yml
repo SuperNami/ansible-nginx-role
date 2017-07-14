@@ -1,0 +1,8 @@
+---
+- name: copy pagespeed core http configuration
+  template: src=templates/conf-http/pagespeed-http.conf.j2
+            dest={{ nginx_conf_http }}pagespeed.conf
+            owner=root
+            group=root
+            mode=0644
+# notify: restart nginx

@@ -1,0 +1,30 @@
+---
+- name: make naxsi download folder
+  file: path={{ item }}
+        state=directory
+        recurse=yes
+        owner={{ user }}
+        group={{ user }}
+        mode=0755
+
+  with_items:
+  - "{{ naxsi_download }}"
+
+
+- name: download naxsi archive
+  get_url: url=http://github.com/nbs-system/naxsi/archive/{{ naxsi_archive }}
+           dest={{ naxsi_download }}{{ naxsi_archive }}
+           force=yes
+
+
+- name: unpack naxsi archive
+  command: tar -xvzf {{ naxsi_archive }} chdir={{ naxsi_download }} creates={{ naxsi_download }}naxsi-{{ naxsi_version }}
+
+
+- name: rename naxsi archive
+  command: mv naxsi-{{ naxsi_version }} naxsi chdir={{ naxsi_download }} creates={{ naxsi_download }}naxsi
+
+
+- name: remove naxsi archive
+  file: path={{ naxsi_download }}{{ naxsi_archive }}
+        state=absent

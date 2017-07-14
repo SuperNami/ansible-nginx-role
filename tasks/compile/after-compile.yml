@@ -1,0 +1,64 @@
+---
+- name: set back 755 permission on all folders
+  command: find {{ downloads }} -type d -exec chmod 755 {} \;
+
+
+- name: set back 644 permission on all files
+  command: find {{ downloads }} -type f -exec chmod 644 {} \;
+
+
+- name: make ngx_pagespeed cache files folder
+  file: path={{ item }}
+        state=directory
+        recurse=yes
+        owner={{ nginx_user }}
+        group={{ nginx_user }}
+        mode=0755
+
+  with_items:
+  - "{{ pagespeed_cache }}"
+
+
+- name: remove default compile files
+  file: path={{ item }}
+        state=absent
+
+  with_items:
+  - "{{ nginx_root }}/fastcgi.conf.default"
+  - "{{ nginx_root }}/fastcgi_params.default"
+  - "{{ nginx_root }}/mime.types.default"
+  - "{{ nginx_root }}/nginx.conf.default"
+  - "{{ nginx_root }}/scgi_params.default"
+  - "{{ nginx_root }}/uwsgi_params.default"
+
+
+- name: remove fastcgi params
+  file: path={{ item }}
+        state=absent
+
+  with_items:
+  - "{{ nginx_root }}/fastcgi_params"
+
+
+- name: copy index html
+  copy: src=files/html/index.html
+        dest={{ nginx_html }}/index.html
+        owner=root
+        group=root
+        mode=0644
+
+
+- name: copy 404 error html
+  copy: src=files/html/404.html
+        dest={{ nginx_html }}/404.html
+        owner=root
+        group=root
+        mode=0644
+
+
+- name: copy 50x error html
+  copy: src=files/html/50x.html
+        dest={{ nginx_html }}/50x.html
+        owner=root
+        group=root
+        mode=0644

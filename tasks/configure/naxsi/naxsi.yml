@@ -1,0 +1,38 @@
+---
+- name: make naxsi downloads folder
+  file: path={{ item }}
+        state=directory
+        recurse=yes
+        owner=root
+        group=root
+        mode=0755
+
+  with_items:
+  - "{{ naxsi_rules_path }}"
+
+
+- name: upload naxsi learning rules
+  copy: src=files/naxsi/naxsi.rules
+        dest={{ naxsi_rules_path }}naxsi.rules
+        owner=root
+        group=root
+        mode=0644
+#  notify: restart nginx
+
+
+- name: upload naxsi core rules
+  copy: src=files/naxsi/naxsi_core.rules
+        dest={{ naxsi_rules_path }}naxsi_core.rules
+        owner=root
+        group=root
+        mode=0644
+#  notify: restart nginx
+
+
+- name: upload naxsi wordpress rules
+  copy: src=files/naxsi/wordpress.rules
+        dest={{ naxsi_rules_path }}wordpress.rules
+        owner=root
+        group=root
+        mode=0644
+#  notify: restart nginx

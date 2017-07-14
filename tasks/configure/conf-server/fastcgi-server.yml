@@ -1,0 +1,20 @@
+---
+- name: make nginx cache folder
+  file: path={{ item }}
+        state=directory
+        recurse=yes
+        owner={{ nginx_user }}
+        group={{ nginx_user }}
+        mode=0755
+
+  with_items:
+  - "{{ fastcgi_cache_path }}"
+
+
+- name: copy fastcgi server configuration
+  template: src=templates/conf-server/fastcgi-server.conf.j2
+            dest={{ nginx_conf_server }}fastcgi.conf
+            owner=root
+            group=root
+            mode=0644
+#  notify: restart nginx

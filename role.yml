@@ -1,0 +1,14 @@
+---
+- name: nginx
+  hosts: all
+  user: root
+  #become: true
+  roles:
+  - nginx
+  vars_files:
+  - vars/local.yml
+  - vars/fastcgi.conf.yml
+  - vars/http.conf.yml
+  - vars/https.conf.yml
+  - vars/paths.yml
+  - vars/versions.yml

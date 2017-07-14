@@ -1,0 +1,45 @@
+---
+- name: install geoip development files
+  apt: pkg=libgeoip-dev
+       update_cache=yes
+       state=present
+
+
+- name: install unarchive binaries
+  apt: pkg={{ item }}
+       update_cache=yes
+       state=present
+
+  with_items:
+  - unzip
+  - gzip
+
+
+- name: make geoip folders
+  file: path={{ item }}
+        state=directory
+        recurse=yes
+        owner=root
+        group=root
+        mode=0755
+
+  with_items:
+  - "{{ geoip_path }}"
+
+
+- name: copy geolite country archive
+  copy: src={{ geoip_location }}
+        dest={{ geoip_path }}{{ geoip_archive }}
+
+
+- name: unpack geolite country archive
+  command: gzip -d {{ geoip_path }}{{ geoip_archive }} chdir={{ geoip_path }} creates={{ geoip_path }}GeoIP.dat
+
+
+- name: copy geolite city archive
+  copy: src={{ geolitecity_location }}
+        dest={{ geoip_path }}{{ geolitecity_archive }}
+
+
+- name: unpack geolite city archive
+  command: gzip -d {{ geoip_path }}{{ geolitecity_archive }} chdir={{ geoip_path }} creates={{ geoip_path }}GeoLiteCity.dat

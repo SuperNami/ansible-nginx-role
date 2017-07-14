@@ -1,0 +1,150 @@
+---
+##### Simply install
+
+- include: install/install.yml
+  tags: install_nginx
+
+
+##### Compile preparation
+
+- include: compile/compile-preparation.yml
+  tags: compile_preparation
+
+
+##### Downloads
+
+## Naxsi
+- include: download/naxsi/naxsi-release.yml
+  tags: download_naxsi_release
+
+- include: download/naxsi/naxsi-git.yml
+  tags: download_naxsi_git
+
+## Geoip
+- include: download/geoip/geoip-local.yml
+  tags: download_geoip_local
+
+- include: download/geoip/geoip-release.yml
+  tags: download_geoip_release
+
+## OpenSSL
+- include: download/openssl/openssl-git.yml
+  tags: download_openssl_git
+
+- include: download/openssl/openssl-release-github.yml
+  tags: download_openssl_release_github
+
+- include: download/openssl/openssl-release-web.yml
+  tags: download_openssl_release_web
+
+- include: download/openssl/openssl-release.yml
+  tags: download_openssl_release
+
+## Pagespeed
+- include: download/pagespeed/pagespeed.yml
+  tags: download_pagespeed
+
+## Cache purge
+- include: download/cache-purge/cache-purge.yml
+  tags: download_cachepurge
+
+
+##### Compile
+
+- include: compile/naxsi-geoip.yml
+  tags: naxsi_geoip
+
+- include: compile/naxsi-pagespeed-cachepurge-geoip.yml
+  tags: naxsi_pagespeed_cachepurge_geoip
+
+- include: compile/compile.yml
+  tags: compile_nginx
+
+
+##### Systemd
+
+- include: init-system/systemd.yml
+  tags: systemd_nginx
+
+
+##### Configure
+
+## Defaults
+- include: configure/main/nginx.yml
+  tags: configure_nginx
+
+- include: configure/main/default.yml
+  tags: configure_default
+
+- include: configure/main/tmpfs.yml
+  tags: nginx_tmpfs
+
+
+## Conf HTTP
+# Cloudflare
+- include: configure/conf-http/cloudflare.yml
+  tags: configure_cloudflare
+
+# Fastcgi - cache purge module
+- include: configure/conf-http/fastcgi-cache-purge-http.yml
+  tags: configure_fastcgi_cache_purge_http
+
+# Fastcgi - http configuration
+- include: configure/conf-http/fastcgi-http.yml
+  tags: configure_fastcgi_http
+
+# Pagespeed - http configuration
+- include: configure/conf-http/pagespeed-http.yml
+  tags: configure_pagespeed_http
+
+# Upstream both
+- include: configure/conf-http/upstream-both.yml
+  tags: configure_upstream_both
+
+# Upstream hhvm
+- include: configure/conf-http/upstream-hhvm.yml
+  tags: configure_upstream_hhvm
+
+# Upstream php-fpm
+- include: configure/conf-http/upstream-php-fpm.yml
+  tags: configure_upstream_php_fpm
+
+
+## Conf server
+- include: configure/conf-server/fastcgi-cache-purge-server.yml
+  tags: configure_fastcgi_cache_purge_server
+
+- include: configure/conf-server/fastcgi-server.yml
+  tags: configure_fastcgi_server
+
+- include: configure/conf-server/pagespeed-server.yml
+  tags: configure_pagespeed_server
+
+- include: configure/conf-server/security.yml
+  tags: configure_security
+
+- include: configure/conf-server/upstream-server.yml
+  tags: configure_upstream_server
+
+
+## Naxsi
+- include: configure/naxsi/naxsi.yml
+  tags: configure_naxsi
+
+
+## SSL
+- include: configure/ssl/prime.yml
+  tags: prime
+
+- include: configure/ssl/ssl.yml
+  tags: configure_ssl
+
+
+### After compile
+- include: compile/after-compile.yml
+  tags: after_compile
+
+
+### Logrotate
+- include: logrotate/configure.yml
+  tags: configure_logrotate

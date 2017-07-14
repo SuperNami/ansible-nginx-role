@@ -1,0 +1,94 @@
+### Additional security headers
+#
+  add_header {{ content_type_header }};
+  add_header {{ frame_header }};
+  add_header {{ transport_header }};
+  add_header {{ xss_header }};
+
+
+### 404 error settings
+#
+# Exact match to specified file
+#
+  error_page 404 /404.html;
+
+  location = /404.html {
+    root {{ nginx_html }};
+  }
+
+
+### 50x error settings
+#
+# Exact match to specified file
+#
+  error_page 500 502 503 504 /50x.html;
+
+  location = /50x.html {
+    root {{ nginx_html }};
+  }
+
+
+# Exact match to specified file
+#
+  location = /favicon.ico {
+    log_not_found off;
+    access_log off;
+  }
+
+
+# Exact match to specified file
+#
+  location = /robots.txt {
+    allow all;
+    log_not_found off;
+    access_log off;
+  }
+
+
+### Deny referral spam
+#
+  if ( $http_referer ~* (jewelry|viagra|nude|girl|nudit|casino|poker|porn|sex|teen|babes) ) {
+    return 403;
+  }
+
+
+### Deny the running of scripts inside writable directories
+#
+#  location ~* /(images|cache|media|logs|tmp)/.*.(php|pl|py|jsp|asp|sh|cgi)$ {
+#    return 403;
+#  }
+
+
+### Block download agents
+#
+  if ($http_user_agent ~* LWP::Simple|wget|libwww-perl) {
+    return 403;
+  }
+
+
+### Block visitors from certain country's
+#
+#  if ($geoip_country_code ~ (CN|KR) ) {
+#    return 403;
+#  }
+
+
+### Block non php requests
+#
+# Match ...
+#
+#  fastcgi_split_path_info ^(.+\.php)(/.+)$;
+#    if (!-f $document_root$fastcgi_script_name) {
+#    return 404;
+#  }
+
+
+### Security
+#
+# Only allow GET and HEAD request methods. By default Nginx blocks all requests type other then GET and HEAD for static content.
+#
+# Causes issue with wp installation
+#
+#  if ($request_method !~ ^(GET|HEAD)$ ) {
+#    return 405;
+#  }

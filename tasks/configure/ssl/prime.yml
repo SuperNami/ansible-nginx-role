@@ -1,0 +1,3 @@
+---
+- name: generate prime
+  command: openssl dhparam -out dhparam.pem 2048 chdir=/etc/ssl/certs creates=/etc/ssl/certs/dhparam.pem

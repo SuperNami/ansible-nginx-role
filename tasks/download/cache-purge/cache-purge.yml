@@ -1,0 +1,17 @@
+---
+- name: make nginx cache purge download folder
+  file: path={{ item }}
+        state=directory
+        recurse=yes
+        owner={{ user }}
+        group={{ user }}
+        mode=0755
+
+  with_items:
+  - "{{ cachepurge_download }}"
+
+
+- name: download nginx cache purge master branch
+  git: repo=https://github.com/FRiCKLE/ngx_cache_purge.git
+       dest={{ cachepurge_download }}
+       force=yes

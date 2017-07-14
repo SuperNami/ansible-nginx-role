@@ -1,0 +1,27 @@
+### Try following paths
+#
+# Match all paths after domain and don't allow checking for files that don't exist
+#
+  location / {
+    try_files $uri $uri/ /index.php;
+    #include {{ naxsi_rules_path }}wordpress.rules;
+  }
+
+
+### Redirect malicious requests
+#
+# Match /RequestDenied requests and return 418
+#
+  location /RequestDenied {
+    return 418;
+  }
+
+
+### Redirect all backend requests to regular wordpress
+#
+# Match all wp-admin requests to regular index.php
+#
+#  location /wp-admin/ {
+#    index index.php;
+#    try_files $uri $uri/ /index.php$args;
+#  }

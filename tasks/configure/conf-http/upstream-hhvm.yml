@@ -1,0 +1,8 @@
+---
+- name: copy hhvm upstream
+  template: src=templates/conf-http/upstream-hhvm.conf.j2
+            dest={{ nginx_root }}/conf/http/upstream-hhvm.conf
+            owner=root
+            group=root
+            mode=0644
+#  notify: restart nginx

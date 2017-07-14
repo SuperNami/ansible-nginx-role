@@ -1,0 +1,7 @@
+---
+- name: upload nginx systemd script
+  template: src=templates/init-system/nginx.service
+            dest=/lib/systemd/system/nginx.service
+            owner=root
+            group=root
+            mode=0644

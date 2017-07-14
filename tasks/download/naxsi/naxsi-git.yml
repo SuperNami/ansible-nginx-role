@@ -1,0 +1,17 @@
+---
+- name: make naxsi download folder
+  file: path={{ item }}
+        state=directory
+        recurse=yes
+        owner={{ user }}
+        group={{ user }}
+        mode=0755
+
+  with_items:
+  - "{{ naxsi_download }}"
+
+
+- name: download naxsi master branch
+  git: repo=http://github.com/nbs-system/naxsi.git
+       dest={{ naxsi_download }}
+       force=yes

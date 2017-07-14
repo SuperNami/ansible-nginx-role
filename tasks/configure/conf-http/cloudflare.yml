@@ -1,0 +1,8 @@
+---
+- name: copy cloudflare http configuration
+  template: src=templates/conf-http/cloudflare.conf.j2
+            dest={{ nginx_conf_http }}cloudflare.conf
+            owner=root
+            group=root
+            mode=0644
+# notify: restart nginx

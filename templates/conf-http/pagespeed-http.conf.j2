@@ -1,0 +1,22 @@
+### Pagespeed core settings
+#
+  pagespeed {{ pagespeed }};
+  pagespeed RewriteLevel {{ pagespeed_rewrite_level }};
+  pagespeed FileCachePath "{{ pagespeed_cache }}";
+  pagespeed EnableFilters {{ pagespeed_enable_filters }};
+  pagespeed MessageBufferSize {{ pagespeed_message_buffer_size }};
+
+  pagespeed UsePerVhostStatistics {{ pagespeed_use_per_vhost_statistics }};
+  pagespeed Statistics {{ pagespeed_statistics }};
+  pagespeed StatisticsLogging {{ pagespeed_statistics_logging }};
+  pagespeed LogDir {{ pagespeed_log_dir }};
+
+  pagespeed StatisticsLoggingIntervalMs {{ pagespeed_statistics_logging_interval }};
+  pagespeed StatisticsLoggingMaxFileSizeKb {{ pagespeed_statistics_logging_max_filesize }};
+
+  pagespeed StatisticsPath {{ pagespeed_statistics_path }};
+  pagespeed GlobalStatisticsPath {{ pagespeed_global_statistics_path }};
+  pagespeed MessagesPath {{ pagespeed_message_path }};
+  pagespeed ConsolePath {{ pagespeed_console_path }};
+  pagespeed AdminPath {{ pagespeed_admin_path }};
+  pagespeed GlobalAdminPath {{ pagespeed_global_admin_path }};

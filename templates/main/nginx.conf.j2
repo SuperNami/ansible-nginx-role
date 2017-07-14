@@ -1,0 +1,128 @@
+user                              {{ nginx_user }};
+worker_processes                  {{ worker_processes }};
+worker_priority                   {{ worker_priority }};
+#worker_rlimit_nofile             {{ worker_rlimit_nofile }};
+
+pid                               {{ nginx_pid_path }};
+lock_file                         {{ nginx_lock_path }};
+
+
+events {
+
+  worker_connections              {{ worker_connections }};
+  use                             {{ use }};
+# accept_mutex                    {{ accept_mutex }};
+# accept_mutex_delay              {{ accept_mutex_delay }};
+  multi_accept                    {{ multi_accept }};
+
+}
+
+
+http {
+
+### General Options
+#
+# aio                             {{ aio }};
+  charset                         {{ charset }};
+
+  max_ranges                      {{ max_ranges }};
+  msie_padding                    {{ msie_padding }};
+
+  access_log                      {{ nginx_access_log }} {{ access_log_option }};
+  error_log                       {{ nginx_error_log }} {{ error_log_option }};
+
+  include                         {{ nginx_root }}/mime.types;
+  default_type                    {{ default_type }};
+
+  output_buffers                  {{ output_buffers }};
+  postpone_output                 {{ postpone_output }};
+
+  read_ahead                      {{ read_ahead }};
+  recursive_error_pages           {{ recursive_error_pages }};
+
+  types_hash_max_size             {{ types_hash_max_size }};
+# server_names_hash_bucket_size   {{ server_names_hash_bucket_size }};
+
+  sendfile                        {{ sendfile }};
+  source_charset                  {{ source_charset }};
+
+  tcp_nodelay                     {{ tcp_nodelay }};
+  tcp_nopush                      {{ tcp_nopush }};
+
+
+### Request limits
+#
+#  limit_req_zone                  {{ limit_req_zone }};
+#  limit_conn_zone                 {{ limit_conn_zone }};
+
+
+### Log Format
+#
+  log_format {{ log_format_option }} '{{ log_format }}';
+
+
+### Security options
+#
+  server_tokens                   {{ server_tokens }};
+  server_name_in_redirect         {{ server_name_in_redirect }};
+  ignore_invalid_headers          {{ ignore_invalid_headers }};
+
+
+### Timeouts
+#
+  send_timeout                    {{ send_timeout }};
+  client_body_timeout             {{ client_body_timeout }};
+  client_header_timeout           {{ client_header_timeout }};
+
+  keepalive_requests              {{ keepalive_requests }};
+  keepalive_disable               {{ keepalive_disable }};
+  keepalive_timeout               {{ keepalive_timeout }};
+
+  reset_timedout_connection       {{ reset_timedout_connection }};
+
+
+### Size Limits
+#
+# client_body_buffer_size         {{ client_body_buffer_size }};
+# client_header_buffer_size       {{ client_header_buffer_size }};
+# large_client_header_buffers     {{ large_client_header_buffers }};
+# client_max_body_size            {{ client_max_body_size }};
+
+
+### Cache static metadata from content
+#
+  open_file_cache                 {{ open_file_cache }};
+  open_file_cache_errors          {{ open_file_cache_errors }};
+  open_file_cache_min_uses        {{ open_file_cache_min_uses }};
+  open_file_cache_valid           {{ open_file_cache_valid }};
+
+
+### GeoIP database
+#
+  geoip_country                   {{ geoip_path }}GeoIP.dat;
+  geoip_city                      {{ geoip_path }}GeoLiteCity.dat;
+
+
+### Gzip options
+#
+  gzip                            {{ gzip }};
+  gzip_disable                    "{{ gzip_disable }}";
+
+  gzip_static                     {{ gzip_static }};
+  gzip_vary                       {{ gzip_vary }};
+  gzip_proxied                    {{ gzip_proxied }};
+  gzip_comp_level                 {{ gzip_comp_level }};
+  gzip_buffers                    {{ gzip_buffers }};
+  gzip_http_version               {{ gzip_http_version }};
+
+  gzip_min_length                 {{ gzip_min_length }};
+  gzip_types                      {{ gzip_types }};
+
+
+### Includes
+#
+  include {{ nginx_conf_http }}*.conf;
+  include {{ nginx_sites_enabled }}*.conf;
+  include {{ naxsi_rules_path }}naxsi_core.rules;
+
+}

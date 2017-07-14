@@ -1,0 +1,24 @@
+### Spdy
+#  
+  add_header                      {{ spdy_header }};
+  spdy_keepalive_timeout          {{ spdy_keepalive_timeout }};
+  spdy_recv_timeout               {{ spdy_recv_timeout }};
+
+
+### Global SSL options with Perfect Forward Secrecy (PFS)
+#
+  ssl_prefer_server_ciphers       {{ ssl_prefer_server_ciphers }};
+  ssl_protocols                   {{ ssl_protocols }};
+  ssl_session_timeout             {{ ssl_session_timeout }};
+  ssl_ciphers                     {{ ssl_ciphers }};
+  ssl_session_cache               {{ ssl_session_cache }};
+  ssl_dhparam                     {{ ssl_dhparam_path }};
+
+
+### OCSP stapling
+#
+  ssl_stapling                    {{ ssl_stapling }};
+  ssl_stapling_verify             {{ ssl_stapling_verify }};
+#  ssl_trusted_certificate         {{ ssl_trusted_certificate }};
+  resolver                        8.8.8.8 8.8.4.4 valid=300s;
+  resolver_timeout                5s;

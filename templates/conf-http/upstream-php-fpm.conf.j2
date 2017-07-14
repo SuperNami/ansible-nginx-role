@@ -1,0 +1,9 @@
+## Upstream configuration
+#
+upstream php {
+
+# Only PHP FPM
+#
+  server {{ php_global_connection }};
+
+}

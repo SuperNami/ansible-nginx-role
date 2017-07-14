@@ -1,0 +1,8 @@
+---
+- name: copy upstream configuration
+  template: src=templates/conf-http/upstream-both.conf.j2
+            dest={{ nginx_root }}/conf/http/upstream-both.conf
+            owner=root
+            group=root
+            mode=0644
+#  notify: restart nginx

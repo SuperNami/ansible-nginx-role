@@ -1,0 +1,25 @@
+---
+- name: make openssl downloads folder
+  file: path={{ item }}
+        state=directory
+        recurse=yes
+        owner={{ user }}
+        group={{ user }}
+        mode=0755
+
+  with_items:
+  - "{{ openssl_download }}"
+
+
+- name: download openssl library
+  get_url: url=http://github.com/openssl/openssl/archive/{{ openssl_archive_github }}
+           dest={{ openssl_download }}{{ openssl_archive_github }}
+
+
+- name: unpack openssl archive
+  command: tar -xvzf {{ openssl_archive_github }} chdir={{ openssl_download }} creates={{ openssl_download }}{{ openssl_folder_github }}
+
+
+- name: remove openssl archive
+  file: path={{ openssl_download }}{{ openssl_archive_github }}
+        state=absent

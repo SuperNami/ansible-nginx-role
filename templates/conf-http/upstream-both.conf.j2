@@ -1,0 +1,10 @@
+## Upstream configuration
+#
+upstream php {
+
+## HHVM & PHP-FPM TCP connection
+#
+  server {{ hhvm_global_connection }} max_fails=3;
+  server {{ php_global_connection }} backup;
+
+}

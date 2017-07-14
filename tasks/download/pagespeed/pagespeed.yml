@@ -1,0 +1,40 @@
+---
+- name: make pagespeed downloads folder
+  file: path={{ item }}
+        state=directory
+        recurse=yes
+        owner={{ user }}
+        group={{ user }}
+        mode=0755
+
+  with_items:
+  - "{{ pagespeed_download }}"
+
+
+- name: download mod pagespeed archive
+  get_url: url=http://github.com/pagespeed/ngx_pagespeed/archive/{{ pagespeed_archive }}
+           dest={{ pagespeed_download }}{{ pagespeed_archive }}
+           force=no
+
+
+- name: extract mod pagespeed archive
+  command: unzip {{ pagespeed_archive }} chdir={{ pagespeed_download }} creates={{ pagespeed_download }}{{ pagespeed_folder }}
+
+
+- name: remove mod pagespeed archive
+  file: path={{ pagespeed_download }}{{ pagespeed_archive }}
+        state=absent
+
+
+- name: download binary pagespeed library archive
+  get_url: url=http://dl.google.com/dl/page-speed/psol/{{ psol_library }}
+           dest={{ pagespeed_download }}{{ pagespeed_folder }}/{{ psol_library }}
+
+
+- name: extract binary pagespeed library archive
+  command: tar -xzvf {{ psol_library }} chdir={{ pagespeed_download }}{{ pagespeed_folder }} creates={{ pagespeed_download }}{{ pagespeed_folder }}/psol
+
+
+- name: remove binary pagespeed library archive
+  file: path={{ pagespeed_download }}{{ pagespeed_folder }}/{{ psol_library }}
+        state=absent

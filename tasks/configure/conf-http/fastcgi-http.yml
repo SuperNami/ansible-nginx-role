@@ -1,0 +1,8 @@
+---
+- name: copy fastcgi cache http configuration
+  template: src=templates/conf-http/fastcgi-http.conf.j2
+            dest={{ nginx_conf_http }}fastcgi.conf
+            owner=root
+            group=root
+            mode=0644
+# notify: restart nginx

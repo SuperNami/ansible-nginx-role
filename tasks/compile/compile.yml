@@ -1,0 +1,7 @@
+---
+- name: run make nginx
+  command: make chdir={{ nginx_download }}{{ nginx_version }} creates={{ nginx_conf_path }}
+
+
+- name: compile nginx
+  command: make install chdir={{ nginx_download }}{{ nginx_version }} creates={{ nginx_conf_path }}

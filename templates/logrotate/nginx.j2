@@ -1,0 +1,17 @@
+{{ nginx_access_log }} {
+	rotate 1
+	size 500M
+	create 644 root root
+	missingok
+	notifempty
+	compress
+}
+
+{{ nginx_error_log }} {
+	rotate 1
+	size 500M
+	create 644 root root
+	missingok
+	notifempty
+	compress
+}

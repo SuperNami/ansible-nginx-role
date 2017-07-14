@@ -1,0 +1,16 @@
+---
+- name: make openssl download folder
+  file: path={{ item }}
+        state=directory
+        recurse=yes
+        owner={{ user }}
+        group={{ user }}
+        mode=0755
+
+  with_items:
+  - "{{ openssl_download }}{{ openssl_folder }}"
+
+
+- name: download openssl master branch
+  git: repo=https://github.com/openssl/openssl.git
+       dest={{ openssl_download }}{{ openssl_folder }}

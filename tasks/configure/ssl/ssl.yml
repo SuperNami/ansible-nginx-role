@@ -1,0 +1,8 @@
+---
+- name: copy ssl.conf
+  template: src=templates/ssl/ssl.conf.j2
+            dest={{ nginx_ssl }}ssl.conf
+            owner=root
+            group=root
+            mode=0644
+#  notify: restart nginx

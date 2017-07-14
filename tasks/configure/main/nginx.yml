@@ -1,0 +1,8 @@
+---
+- name: copy http nginx.conf
+  template: src=templates/main/nginx.conf.j2
+            dest={{ nginx_conf_path }}
+            owner=root
+            group=root
+            mode=0644
+#  notify: restart nginx

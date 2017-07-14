@@ -1,0 +1,50 @@
+---
+### Fastcgi http caching directives
+#
+# http://nginx.org/en/docs/http/ngx_http_fastcgi_module.html
+#
+
+# Sets the path and other parameters of a cache. Cache data are stored in files. Both the key and file name in a cache are a result of applying the MD5 function to the proxied URL.
+fastcgi_cache_path: /var/cache/fastcgi
+
+# The levels parameter defines hierarchy levels of a cache.
+fastcgi_cache_levels: "1:2"
+
+# In addition, all active keys and information about data are stored in a shared memory zone, whose name and size are configured by the keys_zone parameter. One megabyte zone can store about 8 thousand keys.
+fastcgi_keys_zone: "WORDPRESS:50m"
+
+# Cached data that are not accessed during the time specified by the inactive parameter get removed from the cache regardless of their freshness. By default, inactive is set to 10 minutes.
+fastcgi_inactive: 60m
+
+# Defines a key for caching
+fastcgi_cache_key: $scheme$request_method$host$request_uri
+
+# Determines in which cases a stale cached response can be used when an error occurs during communication with the FastCGI server.
+fastcgi_cache_use_stale: error timeout invalid_header http_500
+
+# Disables processing of certain response header fields from the FastCGI server.
+fastcgi_ignore_headers: Cache-Control Expires Set-Cookie
+
+### Fastcgi
+fastcgi_intercept_errors: "on"
+
+
+### Cache purge module
+#
+# Purge the fastcgi cache
+fastcgi_cache_purge: "on"
+
+
+### Fastcgi server block PHP caching directives
+#
+# Defines conditions under which the response will not be taken from a cache. If at least one value of the string parameters is not empty and is not equal to “0” then the response will not be taken from the cache.
+fastcgi_cache_bypass: $skip_cache
+
+# Defines conditions under which the response will not be saved to a cache. If at least one value of the string parameters is not empty and is not equal to “0” then the response will not be saved.
+fastcgi_no_cache: $skip_cache
+
+# Defines a shared memory zone used for caching. The same zone can be used in several places. The off parameter disables caching inherited from the previous configuration level.
+fastcgi_cache: WORDPRESS
+
+# Sets caching time for different response codes.
+fastcgi_cache_valid: 60m

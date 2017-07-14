@@ -1,0 +1,20 @@
+---
+- name: make pagespeed cache folder
+  file: path={{ item }}
+        state=directory
+        recurse=yes
+        owner={{ nginx_user }}
+        group={{ nginx_user }}
+        mode=0755
+
+  with_items:
+  - "{{ pagespeed_cache }}"
+
+
+- name: copy pagespdy server ngx-pagespeed.conf
+  template: src=templates/conf-server/pagespeed-server.conf.j2
+            dest={{ nginx_conf_server }}ngx-pagespeed.conf
+            owner=root
+            group=root
+            mode=0644
+#  notify: restart nginx

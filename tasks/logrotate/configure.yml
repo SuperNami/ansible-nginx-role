@@ -1,0 +1,7 @@
+---
+- name: copy global nginx logrotate
+  template: src=templates/logrotate/nginx.j2
+            dest=/etc/logrotate.d/nginx
+            owner=root
+            group=root
+            mode=0644

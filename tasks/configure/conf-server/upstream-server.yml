@@ -1,0 +1,8 @@
+---
+- name: copy fallback configuration
+  template: src=templates/conf-server/php-hhvm.conf.j2
+            dest={{ nginx_root }}/conf/server/php-hhvm.conf
+            owner=root
+            group=root
+            mode=0644
+#  notify: restart nginx

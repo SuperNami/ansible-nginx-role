@@ -1,0 +1,8 @@
+---
+- name: copy fastcgi cache purge configuration
+  template: src=templates/conf-http/fastcgi-cache-purge.conf.j2
+            dest={{ nginx_conf_http }}fastcgi-cache-purge.conf
+            owner=root
+            group=root
+            mode=0644
+  notify: restart nginx

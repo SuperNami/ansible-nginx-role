@@ -1,0 +1,82 @@
+---
+- name: install compile dependencies
+  apt: pkg={{ item }}
+       state=present
+       update_cache=yes
+
+  with_items:
+  - libtool
+  - autoconf
+  - automake
+  - libpcre3
+  - libpcre3-dev
+  - zlibc
+  - zlib1g
+  - zlib1g-dev
+
+
+- name: make nginx folders
+  file: path={{ item }}
+        state=directory
+        recurse=yes
+        owner=root
+        group=root
+        mode=0755
+
+  with_items:
+  - "{{ nginx_ssl }}"
+  - "{{ nginx_html }}"
+  - "{{ nginx_download }}"
+  - "{{ nginx_conf_http }}"
+  - "{{ nginx_conf_server }}"
+  - "{{ nginx_log_path }}"
+  - "{{ nginx_temp_path }}"
+  - "{{ nginx_sites_available }}"
+  - "{{ nginx_sites_enabled }}"
+
+
+- name: make and set permissions nginx global error.log
+  file: path={{ nginx_error_log }}
+        state=touch
+        owner={{ nginx_user }}
+        group={{ nginx_user }}
+        mode=0755
+
+
+- name: make and set permissions nginx global access.log
+  file: path={{ nginx_access_log }}
+        state=touch
+        owner={{ nginx_user }}
+        group={{ nginx_user }}
+        mode=0755
+
+
+- name: download nginx source
+  get_url: url=http://www.nginx.org/download/{{ nginx_version }}.tar.gz
+           dest={{ nginx_download }}{{ nginx_version }}.tar.gz
+           force=no
+
+
+- name: extract nginx source files
+  command: tar -xvpzf {{ nginx_version }}.tar.gz chdir={{ nginx_download }} creates={{ nginx_download }}{{ nginx_version }}
+
+
+- name: remove nginx archive
+  file: path={{ nginx_download }}{{ nginx_version }}.tar.gz
+        state=absent
+
+
+- name: set user and group permissions on all files and folders
+  file: path={{ downloads }}
+        owner={{ user }}
+        group={{ user }}
+        recurse=yes
+        state=directory
+
+
+- name: set 777 permission on all folders
+  command: find {{ downloads }} -type d -exec chmod 777 {} \;
+
+
+- name: set 777 permission on all files
+  command: find {{ downloads }} -type f -exec chmod 777 {} \;

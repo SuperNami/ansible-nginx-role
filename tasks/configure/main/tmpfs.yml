@@ -1,0 +1,29 @@
+---
+- name: create tmpfs folders
+  file: path={{ item }}
+        owner={{ nginx_user }}
+        group={{ nginx_user }}
+        mode=0755
+        state=directory
+
+  with_items:
+  - /mnt/pagespeed
+  - /mnt/fastcgi
+
+
+- name: mount pagespeed tmpfs filesystem
+  mount: name={{ pagespeed_cache }}
+         src=/mnt/pagespeed
+         opts=defaults
+         fstype=tmpfs
+         state=mounted
+#  notify: restart nginx
+
+
+- name: mount fastcgi tmpfs filesystem
+  mount: name={{ fastcgi_cache_path }}
+         src=/mnt/fastcgi
+         opts=defaults
+         fstype=tmpfs
+         state=mounted
+#  notify: restart nginx

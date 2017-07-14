@@ -1,0 +1,346 @@
+---
+###### Main configuration
+
+# http://nginx.org/en/docs/ngx_core_module.html
+#
+# http://nginx.org/en/docs/http/ngx_http_core_module.html
+
+# One worker connection per cpu.
+#
+# cat /proc/cpuinfo | grep processor
+worker_processes: auto
+
+# Defines the scheduling priority for worker processes like it is done by the nice command: a negative number means higher priority. Allowed range normally varies from -20 to 20.
+worker_priority: 15
+
+# Value for maximum file descriptors that can be opened by process.
+worker_rlimit_nofile: 10000
+
+
+
+###### Events configuration
+
+# Determines how much clients will be served per worker.
+#
+# max clients = worker_connections * worker_processes.
+#
+# max clients is also limited by the number of socket connections available on the system (~64k).
+worker_connections: 1024
+
+
+# Optimized to serve many clients with each thread, essential for linux.
+use: epoll
+
+# Serializes the accept() method on new connections by worker processes.
+#
+# Default value: on
+accept_mutex: "off"
+
+# The maximum time a worker process will wait to accept new connections if another worker is already doing this.
+#
+# Default value: 500ms
+accept_mutex_delay: 500ms
+
+# accept as many connections as possible, may flood worker connections if set too low.
+multi_accept: "on"
+
+
+
+###### HTTP block configuration
+
+### General options
+aio: "on"
+
+# Adds the specified charset to the “Content-Type” response header field. If this charset is different from the charset specified in the source_charset directive, a conversion is performed. The parameter off cancels the addition of charset to the “Content-Type” response header field.
+charset: utf-8
+
+# Sets the maximum number of ranges allowed in a byte-range request. Specifying 0 disables byte-range support.
+max_ranges: 1
+
+# Enables the disabling of adding comments to responses with a status greater than 400 for MSIE clients, in order to pad the response size to 512 bytes.
+msie_padding: "off"
+
+
+### Error log
+nginx_error_log: "{{ nginx_log_path }}nginx-error.log"
+error_log_option: debug
+
+
+### Access log
+#
+# access_log path [format [buffer=size [flush=time]]
+# warn info main
+#
+# nginx_access_log: /var/log/nginx/nginx-access.log
+nginx_access_log: "{{ nginx_log_path }}nginx-access.log"
+access_log_option: ""
+
+#
+default_type: application/octet-stream
+
+# Sets the number and size of buffers used for reading a response from a disk.
+output_buffers: 1 512
+
+# If possible, the transmission of client data will be postponed until nginx has at least size bytes of data to send. The zero value disables postponing data transmission.
+postpone_output: 1440
+
+# If possible, the kernel will preread files up to the size parameter.
+read_ahead: 512K
+
+# Enables or disables doing several redirects using the error_page directive.
+recursive_error_pages: "on"
+
+
+
+# Sets the maximum size of the types hash tables.
+#
+# http://nginx.org/en/docs/hash.html
+types_hash_max_size: 2048
+
+# Sets the bucket size for the server names hash tables. The default value depends on the size of the processor’s cache line.
+server_names_hash_bucket_size: 64
+
+# copies data between one FD and other from within the kernel faster then read() + write().
+sendfile: "on"
+
+#
+source_charset: utf-8
+
+# don't buffer data sent, good for small data bursts in real time.
+tcp_nodelay: "on"
+
+# send headers in one peace, its better then sending them one by one.
+tcp_nopush: "on"
+
+# Log format
+log_format_option: main
+log_format: $remote_addr $host $remote_user [$time_local] "$request" $status $body_bytes_sent "$http_referer" "$http_user_agent" $ssl_cipher $request_time
+
+
+
+### Security
+#
+# Enables or disables emitting nginx version in error messages and in the “Server” response header field.
+server_tokens: "off"
+
+# Enables or disables the use of the primary server name, specified by the server_name directive, in redirects issued by nginx. When the use of the primary server name is disabled, the name from the “Host” request header field is used. If this field is not present, the IP address of the server is used.
+server_name_in_redirect: "on"
+
+# Controls whether header fields with invalid names should be ignored. Valid names are composed of English letters, digits, hyphens, and possibly underscores (as controlled by the underscores_in_headers directive).
+ignore_invalid_headers: "on"
+
+
+
+### Timeouts
+#
+
+# Sets a timeout for transmitting a response to the client. A timeout is set only between two successive write operations, not for the transmission of the whole response. If a client does not receive anything within this time, a connection is closed.
+send_timeout: 24s
+
+# Defines a timeout for reading client request body. If a client does not transmit anything within this time, the 408 (Request Time-out) error is returned to the client.
+client_body_timeout: 4s
+
+# Defines a timeout for reading client request header. If a client does not transmit the entire header within this time, the 408 (Request Time-out) error is returned to the client.
+client_header_timeout: 4s
+
+# Sets the maximum number of requests that can be served through one keep-alive connection. After the maximum number of requests are made, the connection is closed.
+keepalive_requests: 50
+
+# Disables keep-alive connections with misbehaving browsers. The browser parameters specify which browsers will be affected. The value msie6 disables keep-alive connections with old versions of MSIE, once a POST request is received. The value safari disables keep-alive connections with Safari and Safari-like browsers on Mac OS X and Mac OS X-like operating systems. The value none enables keep-alive connections with all browsers.
+keepalive_disable: none
+
+# server will close connection after this time.
+keepalive_timeout: 30
+
+# allow the server to close connection on non responding client, this will free up memory.
+reset_timedout_connection: "on"
+
+
+
+### Size limits
+#
+
+## Upload buffers
+
+# Sets buffer size for reading client request body. In case the request body is larger than the buffer, the whole body or only its part is written to a temporary file. By default, buffer size is equal to two memory pages. This is 8K on x86, other 32-bit platforms, and x86-64. It is usually 16K on other 64-bit platforms.
+client_body_buffer_size: 8k
+
+# Sets buffer size for reading client request header.
+client_header_buffer_size: 1k
+
+# Sets the maximum number and size of buffers used for reading large client request header. A request line cannot exceed the size of one buffer, or the 414 (Request-URI Too Large) error is returned to the client. A request header field cannot exceed the size of one buffer as well, or the 400 (Bad Request) error is returned to the client. Buffers are allocated only on demand. By default, the buffer size is equal to 8K bytes. If after the end of request processing a connection is transitioned into the keep-alive state, these buffers are released.
+large_client_header_buffers: 4 4k/8k
+
+# Max size for file uploads
+client_max_body_size: 30m
+
+
+
+### Open file cache
+#
+# Cache information about frequently accessed files, can boost performance, but you need to test those values.
+#
+# Configures a cache that can store:
+#
+# - open file descriptors, their sizes and modification times
+# - information on existence of directories;
+# - file lookup errors, such as “file not found”, “no read permission”, and so on.
+#
+# max, inactive, off
+open_file_cache: max=1000 inactive=2h
+
+# Sets the minimum number of file accesses during the period configured by the inactive parameter of the open_file_cache directive, required for a file descriptor to remain open in the cache.
+open_file_cache_min_uses: 1
+
+# Sets a time after which open_file_cache elements should be validated.
+open_file_cache_valid: 1h
+
+# Enables or disables caching of file lookup errors by open_file_cache.
+open_file_cache_errors: "on"
+
+
+
+### Gzip compression
+#
+
+# Enables or disables gzipping of responses.
+gzip: "on"
+
+# Disables gzipping of responses for requests with “User-Agent” header fields matching any of the specified regular expressions. The special mask “msie6” corresponds to the regular expression “MSIE [4-6]\.”, but works faster.
+gzip_disable: "msie6"
+
+# Enables or disables checking the existence of precompressed files. The following directives are also taken into account: gzip_http_version, gzip_proxied, gzip_disable, and gzip_vary.
+gzip_static: "on"
+
+# Enables or disables inserting the “Vary: Accept-Encoding” response header field if the directives gzip, gzip_static, or gunzip are active.
+gzip_vary: "on"
+
+# Enables or disables gzipping of responses for proxied requests depending on the request and response. The fact that the response is proxied is determined by the presence of the “Via” request header field. A directive accepts multiple parameters:
+#
+# any = enables compression for all proxied requests.
+gzip_proxied: any
+
+# Sets a gzip compression level of a response. Acceptable values are in the range from 1 to 9.
+gzip_comp_level: 6
+
+# Sets the number and size of buffers used to compress a response. By default, the buffer size is equal to one memory page. This is either 4K or 8K, depending on a platform.
+gzip_buffers: 16 8k
+
+# Sets the minimum HTTP version of a request required to compress a response.
+gzip_http_version: 1.0
+
+# Sets the minimum length of a response that will be gzipped. The length is determined only from the “Content-Length” response header field.
+gzip_min_length: 0
+
+# Enables gzipping of responses for the specified MIME types in addition to “text/html”. The special value “*” matches any MIME type (0.8.29). Responses with the “text/html” type are always compressed.
+gzip_types: text/plain text/css application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript
+
+
+
+### Pagespeed
+#
+# http://ngxpagespeed.com/ngx_pagespeed_example/
+pagespeed: "on"
+
+# Rewrite level
+pagespeed_rewrite_level: CoreFilters
+
+# Pagespeed cache location
+pagespeed_cache: /var/cache/pagespeed
+
+# Enable certain pagespeed filters
+pagespeed_enable_filters: remove_comments,collapse_whitespace
+
+# Message buffer size
+pagespeed_message_buffer_size: 100000
+
+# You can choose whether PageSpeed aggregates its statistics over all virtual hosts (the default), or to keeps separate counts for each. You can chose the latter by specifying on.
+pagespeed_use_per_vhost_statistics: "on"
+
+# Pagespeed statistics
+pagespeed_statistics: "on"
+
+# Keep statistics in log file
+pagespeed_statistics_logging: "on"
+
+# Log directory for pagespeed
+pagespeed_log_dir: /var/log/pagespeed
+
+# May be set to indicate how often to log statistics snapshots (in milliseconds)
+pagespeed_statistics_logging_interval: 60000
+
+# may be set to indicate the maximum size for the logfile (in kilobytes) so 1MB
+pagespeed_statistics_logging_max_filesize: 1024
+
+
+
+### PageSpeed admin pages
+#
+# https://developers.google.com/speed/pagespeed/module/admin
+#
+
+# Launchpad for Statistics, Histograms, and a subset of the Caches page as described above.
+pagespeed_statistics_path: /pagespeed_statistics
+
+# Same as above, but aggregates statistics across all configured servers. You must enable UsePerVHostStatistics for separate global statistics to be retained, otherwise all statistics will be global.
+pagespeed_global_statistics_path: /pagespeed_global_statistics
+
+# This page shows recent log messages
+pagespeed_message_path: /pagespeed_message
+
+# Displays a console of graphs of server optimization behavior over time.
+pagespeed_console_path: /pagespeed_console
+
+# Covers all administrative functions for a host in one handler. If you establish this handler, you don't need any of the other server-scoped methods.
+pagespeed_admin_path: /pagespeed_admin
+
+# Covers all administrative functions for the entire global state in one handler.
+pagespeed_global_admin_path: /pagespeed_global_admin
+
+# This module provides the ability to get some status from nginx.
+nginx_stub_status: /status
+
+
+
+### Security headers
+#
+# When serving user-supplied content, include a X-Content-Type-Options: nosniff header along with the Content-Type: header, to disable content-type sniffing on some browsers.
+content_type_header: X-Content-Type-Options "nosniff"
+
+# Don't allow the browser to render the page inside an frame or iframe and avoid clickjacking
+frame_header: X-Frame-Options "Deny"
+
+# Enable HSTS (HTTP Strict Transport Security)
+transport_header: Strict-Transport-Security "max-age=315360000; includeSubdomains"
+
+# This header enables the Cross-site scripting (XSS) filter built into most recent web browsers.
+xss_header: X-XSS-Protection "1; mode=block"
+
+
+### Security rate limiting and request throttling
+#
+# http://nginx.org/en/docs/http/ngx_http_limit_conn_module.html
+# http://nginx.org/en/docs/http/ngx_http_limit_req_module.html
+#
+
+# IP address connection limiting
+#
+# addr:10m =
+limit_conn_zone: "$binary_remote_addr zone=gulag:10m"
+
+# IP address rate limiting
+#
+# one:10m =
+#
+# 4r/s =
+limit_req_zone: "$binary_remote_addr zone=one:10m rate=4r/s"
+
+# Limit connections per IP address
+#
+# addr 8 =
+limit_conn: addr 8
+
+
+# PCRE
+#
+# http://www.php.net/manual/en/reference.pcre.pattern.syntax.php

@@ -1,0 +1,41 @@
+---
+# Nginx folders
+nginx_root: /etc/nginx
+nginx_html: /etc/nginx/html
+
+nginx_ssl: /etc/nginx/ssl/
+nginx_conf: /etc/nginx/conf/
+nginx_conf_http: "{{ nginx_conf }}http/"
+nginx_conf_server: "{{ nginx_conf }}server/"
+nginx_log_path: /var/log/nginx/
+
+# Server block paths
+nginx_sites_available: /etc/nginx/sites-available/
+nginx_sites_enabled: /etc/nginx/sites-enabled/
+nginx_temp_path: /etc/nginx/temp/
+
+# Compile paths
+nginx_sbin_path: /usr/sbin/nginx
+nginx_conf_path: /etc/nginx/nginx.conf
+nginx_pid_path: /var/run/nginx.pid
+nginx_lock_path: /var/run/nginx.lock
+proxy_temp_path: /etc/nginx/temp/proxy_temp
+fastcgi_temp_path: /etc/nginx/temp/fastcgi_temp
+client_body_temp_path: /etc/nginx/temp/client_body_temp
+
+# Download folders
+nginx_download: "{{ downloads }}nginx/"
+naxsi_download: "{{ downloads }}naxsi/"
+openssl_download: "{{ downloads }}openssl/"
+pagespeed_download: "{{ downloads }}pagespeed/"
+cachepurge_download: "{{ downloads }}cachepurge/"
+
+# Naxsi
+naxsi_rules_path: /etc/nginx/naxsi/
+
+# Geoip local downloads
+geoip_path: /usr/local/share/geoip/
+geoip_archive: GeoIP.dat.gz
+geoip_location: files/archives/GeoIP.dat.gz
+geolitecity_archive: GeoLiteCity.dat.gz
+geolitecity_location: files/archives/GeoLiteCity.dat.gz

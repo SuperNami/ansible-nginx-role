@@ -1,0 +1,86 @@
+# Matches all /ngx_pagespeed_static/ requests with the position before the first character in the string
+#
+  location ~ "^/pagespeed_static/" { }
+
+
+# Matches all /ngx_pagespeed_beacon requests with the position before the first character in the string
+#
+  location ~ "^/ngx_pagespeed_beacon$" { }
+
+
+# This page shows site specific statistics about the ngx_pagespeed module
+#
+  location {{ pagespeed_statistics_path }} {
+    access_log off;
+#    allow 127.0.0.1;
+#    allow {{ home_ip }};
+    deny all;
+  }
+
+
+# This page shows global statistics about the ngx_pagespeed module
+#
+  location {{ pagespeed_global_statistics_path }} {
+    access_log off;
+#    allow 127.0.0.1;
+#    allow {{ home_ip }};
+    deny all;
+  }
+
+
+# This page shows recent log messages
+#
+  location {{ pagespeed_message_path }} {
+    access_log off;
+#    allow 127.0.0.1;
+#    allow {{ home_ip }};
+    deny all;
+  }
+
+
+# This page lets you view a graphical console displaying statistics about the ngx_pagespeed module
+#
+  location {{ pagespeed_console_path }} {
+    access_log off;
+#    allow 127.0.0.1;
+#    allow {{ home_ip }};
+    deny all;
+  }
+
+
+# Pagespeed admin path
+#
+  location {{ pagespeed_admin_path }} {
+    access_log off;
+#    allow 127.0.0.1;
+#    allow {{ home_ip }};
+    deny all;
+  }
+
+
+# Pagespeed global admin path
+#
+  location {{ pagespeed_global_admin_path }} {
+    access_log off;
+#    allow 127.0.0.1;
+#    allow {{ home_ip }};
+    deny all;
+  }
+
+
+# Match all queries to /nginx_stub_status
+#
+  location = {{ nginx_stub_status }} {
+    stub_status on;
+    access_log off;
+#    allow 127.0.0.1;
+#    allow {{ home_ip }};
+    deny all;
+  }
+
+
+### Ensure requests for pagespeed optimized resources go to the pagespeed handler and no extraneous headers get set.
+#
+  location ~ "\.pagespeed\.([a-z]\.)?[a-z]{2}\.[^.]{10}\.[^.]+" {
+    add_header "" "";
+  }
