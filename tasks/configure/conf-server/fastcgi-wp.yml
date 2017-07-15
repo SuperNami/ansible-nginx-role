@@ -1,0 +1,8 @@
+---
+- name: copy fastcgi wp configuration
+  template: src=templates/conf-server/fastcgi-wp.conf.j2
+            dest={{ nginx_conf_server }}fastcgi-wp.conf
+            owner=root
+            group=root
+            mode=0644
+#  notify: restart nginx

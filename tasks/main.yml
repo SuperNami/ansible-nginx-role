@@ -120,8 +120,11 @@
 - include: configure/conf-server/pagespeed-server.yml
   tags: configure_pagespeed_server
 
-- include: configure/conf-server/security.yml
-  tags: configure_security
+- include: configure/conf-server/security-all.yml
+  tags: configure_security_all
+
+- include: configure/conf-server/security-wp.yml
+  tags: configure_security_wp
 
 - include: configure/conf-server/upstream-server.yml
   tags: configure_upstream_server
@@ -130,6 +133,9 @@
 ## Naxsi
 - include: configure/naxsi/naxsi.yml
   tags: configure_naxsi
+
+- include: configure/naxsi/naxsi-wp.yml
+  tags: configure_naxsi_wp
 
 
 ## SSL

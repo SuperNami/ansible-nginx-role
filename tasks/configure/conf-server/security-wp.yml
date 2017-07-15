@@ -1,0 +1,8 @@
+---
+- name: copy wordpress security configuration
+  template: src=templates/conf-server/security-wp.conf.j2
+            dest={{ nginx_conf_server }}security-wp.conf
+            owner=root
+            group=root
+            mode=0644
+# notify: restart nginx

@@ -1,0 +1,8 @@
+---
+- name: upload naxsi wordpress rules
+  copy: src=files/naxsi/wordpress.rules
+        dest={{ naxsi_rules_path }}wordpress.rules
+        owner=root
+        group=root
+        mode=0644
+#  notify: restart nginx

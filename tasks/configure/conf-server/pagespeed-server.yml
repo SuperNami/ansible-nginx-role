@@ -13,7 +13,7 @@
 
 - name: copy pagespdy server ngx-pagespeed.conf
   template: src=templates/conf-server/pagespeed-server.conf.j2
-            dest={{ nginx_conf_server }}ngx-pagespeed.conf
+            dest={{ nginx_conf_server }}pagespeed-server.conf
             owner=root
             group=root
             mode=0644
